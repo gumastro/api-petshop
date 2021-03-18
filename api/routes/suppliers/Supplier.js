@@ -1,4 +1,4 @@
-const TableModel = require('./SupplierTableModel')
+const SupplierTable = require('./SupplierTable')
 
 class Supplier {
     constructor({ id, company, email, category, createdAt, updatedAt, version }) {
@@ -12,7 +12,7 @@ class Supplier {
     }
 
     async create() {
-        const result = await TableModel.create({
+        const result = await SupplierTable.add({
             company: this.company,
             email: this.email,
             category: this.category
@@ -22,6 +22,18 @@ class Supplier {
         this.createdAt = result.createdAt
         this.updatedAt = result.updatedAt
         this.version = result.version
+    }
+
+    async load() {
+        const foundSupplier = await SupplierTable.findById(this.id)
+
+        this.company = foundSupplier.company
+        this.email = foundSupplier.email
+        this.category = foundSupplier.category
+        this.createdAt = foundSupplier.createdAt
+        this.updatedAt = foundSupplier.updatedAt
+        this.version = foundSupplier.version
+
     }
 }
 
