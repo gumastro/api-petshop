@@ -14,7 +14,7 @@ module.exports = {
             }
         })
         if (!found) {
-            throw new Error('Supplier not found!')
+            throw new Error('[ERROR] Supplier not found!')
         }
 
         return found
