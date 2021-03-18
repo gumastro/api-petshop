@@ -35,6 +35,25 @@ class Supplier {
         this.version = foundSupplier.version
 
     }
+
+    async update() {
+        await SupplierTable.findById(this.id)
+        const fields = ['company', 'email', 'category']
+        const dataToUpdate = {}
+
+        fields.forEach((field) => {
+            const value = this[field]
+            if(typeof value === 'string' && value.length > 0) {
+                dataToUpdate[field] = value
+            }
+        })
+
+        if(Object.keys(dataToUpdate).length === 0) {
+            throw new Error ('[ERROR] Unable to update due to lack of data')
+        }
+
+        await SupplierTable.update(this.id, dataToUpdate)
+    }
 }
 
 module.exports = Supplier
