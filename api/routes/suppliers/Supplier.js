@@ -1,4 +1,6 @@
 const SupplierTable = require('./SupplierTable')
+const InvalidField = require('../../errors/InvalidField')
+const DataNotProvided = require('../../errors/DataNotProvided')
 
 class Supplier {
     constructor({ id, company, email, category, createdAt, updatedAt, version }) {
@@ -50,7 +52,7 @@ class Supplier {
         })
 
         if(Object.keys(dataToUpdate).length === 0) {
-            throw new Error ('[ERROR] Unable to update due to lack of data')
+            throw new DataNotProvided()
         }
 
         await SupplierTable.update(this.id, dataToUpdate)
@@ -67,7 +69,7 @@ class Supplier {
             const value = this[field]
 
             if (typeof value !== 'string' || value.length === 0) {
-                throw new Error(`[ERROR] Invalid '${field}' field`)
+                throw new InvalidField(field)
             }
         })
     }

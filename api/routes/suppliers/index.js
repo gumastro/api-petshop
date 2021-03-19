@@ -1,7 +1,6 @@
 const router = require('express').Router()
 const SupplierTable = require('./SupplierTable')
 const Supplier = require('./Supplier')
-const { response } = require('express')
 
 router.get('/', async (request, response) => {
     const results = await SupplierTable.list()
@@ -11,7 +10,7 @@ router.get('/', async (request, response) => {
     )
 })
 
-router.post('/', async (request, response) => {
+router.post('/', async (request, response, next) => {
     try {
         const receivedData = request.body
         const supplier = new Supplier(receivedData)
@@ -21,15 +20,11 @@ router.post('/', async (request, response) => {
             JSON.stringify(supplier)
         )
     } catch(error) {
-        response.status(400).send(
-            JSON.stringify({
-                message: error.message
-            })
-        )
+        next(error)
     }
 })
 
-router.get('/:idSupplier', async (request, response) => {
+router.get('/:idSupplier', async (request, response, next) => {
     try {
         const id = request.params.idSupplier
         const supplier = new Supplier({ id: id })
@@ -40,15 +35,11 @@ router.get('/:idSupplier', async (request, response) => {
             JSON.stringify(supplier)
         )
     } catch (error) {
-        response.status(404).send(
-            JSON.stringify({
-                message: error.message
-            })
-        )
+        next(error)
     }
 })
 
-router.put('/:idSupplier', async (request, response) => {
+router.put('/:idSupplier', async (request, response, next) => {
     try {
         const id = request.params.idSupplier
         const receivedData = request.body
@@ -59,15 +50,11 @@ router.put('/:idSupplier', async (request, response) => {
     
         response.status(204).end()
     } catch (error) {
-        response.status(400).send(
-            JSON.stringify({
-                message: error.message
-            })
-        )
+        next(error)
     }
 })
 
-router.delete('/:idSupplier', async (request, response) => {
+router.delete('/:idSupplier', async (request, response, next) => {
     try {
         const id = request.params.idSupplier
         const supplier = new Supplier({ id: id })
@@ -77,11 +64,7 @@ router.delete('/:idSupplier', async (request, response) => {
 
         response.status(204).end()
     } catch (error) {
-        response.status(404).send(
-            JSON.stringify({
-                message: error.message
-            })
-        )
+        next(error)
     }
 })
 
