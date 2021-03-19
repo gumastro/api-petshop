@@ -4,10 +4,27 @@ const NotFound = require('./errors/NotFound')
 const InvalidField = require('./errors/InvalidField')
 const DataNotProvided = require('./errors/DataNotProvided')
 const UnsupportedValue = require('./errors/UnsupportedValue')
+const acceptedFormats = require('./Serializer').acceptedFormats
 
 const app = express()
 
 app.use(express.json());
+
+app.use((request, response, next) => {
+    let requestedFormat = request.header('Accept')
+
+    if(requestedFormat === '*/*') {
+        requestedFormat = 'application/json'
+    }
+
+    if (acceptedFormats.indexOf(requestedFormat) === -1) {
+        response.status(406).end()
+        return
+    }
+
+    response.setHeader('Content-Type', requestedFormat)
+    next()
+})
 
 const router = require('./routes/suppliers')
 app.use('/api/suppliers', router)
