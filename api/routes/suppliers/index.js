@@ -12,13 +12,21 @@ router.get('/', async (request, response) => {
 })
 
 router.post('/', async (request, response) => {
-    const receivedData = request.body
-    const supplier = new Supplier(receivedData)
-    await supplier.create()
-
-    response.send(
-        JSON.stringify(supplier)
-    )
+    try {
+        const receivedData = request.body
+        const supplier = new Supplier(receivedData)
+        await supplier.create()
+    
+        response.send(
+            JSON.stringify(supplier)
+        )
+    } catch(error) {
+        response.send(
+            JSON.stringify({
+                message: error.message
+            })
+        )
+    }
 })
 
 router.get('/:idSupplier', async (request, response) => {

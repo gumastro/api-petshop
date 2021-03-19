@@ -12,6 +12,7 @@ class Supplier {
     }
 
     async create() {
+        this.validate()
         const result = await SupplierTable.add({
             company: this.company,
             email: this.email,
@@ -57,6 +58,18 @@ class Supplier {
 
     delete() {
         return SupplierTable.delete(this.id)
+    }
+
+    validate() {
+        const fields = ['company', 'email', 'category']
+
+        fields.forEach(field => {
+            const value = this[field]
+
+            if (typeof value !== 'string' || value.length === 0) {
+                throw new Error(`[ERROR] Invalid '${field}' field`)
+            }
+        })
     }
 }
 
