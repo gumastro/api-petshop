@@ -3,6 +3,7 @@ const config = require('config')
 const NotFound = require('./errors/NotFound')
 const InvalidField = require('./errors/InvalidField')
 const DataNotProvided = require('./errors/DataNotProvided')
+const UnsupportedValue = require('./errors/UnsupportedValue')
 
 const app = express()
 
@@ -19,6 +20,9 @@ app.use((error, request, response, next) => {
     }
     if(error instanceof InvalidField || error instanceof DataNotProvided) {
         status = 400
+    }
+    if(error instanceof UnsupportedValue) {
+        status = 406
     }
 
     response.status(status).send(
