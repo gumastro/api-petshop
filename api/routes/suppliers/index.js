@@ -60,4 +60,22 @@ router.put('/:idSupplier', async (request, response) => {
     }
 })
 
+router.delete('/:idSupplier', async (request, response) => {
+    try {
+        const id = request.params.idSupplier
+        const supplier = new Supplier({ id: id })
+
+        await supplier.load()
+        await supplier.delete()
+
+        response.end()
+    } catch (error) {
+        response.send(
+            JSON.stringify({
+                message: error.message
+            })
+        )
+    }
+})
+
 module.exports = router

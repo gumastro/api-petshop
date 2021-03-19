@@ -54,6 +54,10 @@ class Supplier {
 
         await SupplierTable.update(this.id, dataToUpdate)
     }
+
+    delete() {
+        return SupplierTable.delete(this.id)
+    }
 }
 
 module.exports = Supplier
