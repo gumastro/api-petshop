@@ -21,7 +21,7 @@ router.post('/', async (request, response) => {
             JSON.stringify(supplier)
         )
     } catch(error) {
-        response.send(
+        response.status(400).send(
             JSON.stringify({
                 message: error.message
             })
@@ -40,7 +40,7 @@ router.get('/:idSupplier', async (request, response) => {
             JSON.stringify(supplier)
         )
     } catch (error) {
-        response.send(
+        response.status(404).send(
             JSON.stringify({
                 message: error.message
             })
@@ -54,13 +54,12 @@ router.put('/:idSupplier', async (request, response) => {
         const receivedData = request.body
         const data = Object.assign({}, receivedData, { id: id })
         const supplier = new Supplier(data)
-        console.log(supplier)
 
         await supplier.update()
     
         response.status(204).end()
     } catch (error) {
-        response.send(
+        response.status(400).send(
             JSON.stringify({
                 message: error.message
             })
@@ -78,7 +77,7 @@ router.delete('/:idSupplier', async (request, response) => {
 
         response.status(204).end()
     } catch (error) {
-        response.send(
+        response.status(404).send(
             JSON.stringify({
                 message: error.message
             })
