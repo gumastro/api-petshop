@@ -6,7 +6,7 @@ const { response } = require('express')
 router.get('/', async (request, response) => {
     const results = await SupplierTable.list()
 
-    response.send(
+    response.status(200).send(
         JSON.stringify(results)
     )
 })
@@ -17,7 +17,7 @@ router.post('/', async (request, response) => {
         const supplier = new Supplier(receivedData)
         await supplier.create()
     
-        response.send(
+        response.status(201).send(
             JSON.stringify(supplier)
         )
     } catch(error) {
@@ -36,7 +36,7 @@ router.get('/:idSupplier', async (request, response) => {
         
         await supplier.load()
 
-        response.send(
+        response.status(200).send(
             JSON.stringify(supplier)
         )
     } catch (error) {
@@ -58,7 +58,7 @@ router.put('/:idSupplier', async (request, response) => {
 
         await supplier.update()
     
-        response.end()
+        response.status(204).end()
     } catch (error) {
         response.send(
             JSON.stringify({
@@ -76,7 +76,7 @@ router.delete('/:idSupplier', async (request, response) => {
         await supplier.load()
         await supplier.delete()
 
-        response.end()
+        response.status(204).end()
     } catch (error) {
         response.send(
             JSON.stringify({
