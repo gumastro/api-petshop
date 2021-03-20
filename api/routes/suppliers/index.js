@@ -36,7 +36,10 @@ router.get('/:idSupplier', async (request, response, next) => {
         
         await supplier.load()
 
-        const serializer = new SupplierSerializer(response.getHeader('Content-Type'))
+        const serializer = new SupplierSerializer(
+            response.getHeader('Content-Type'),
+            ['email', 'createdAt', 'updatedAt', 'version']
+        )
 
         response.status(200).send(
             serializer.serialize(supplier)
