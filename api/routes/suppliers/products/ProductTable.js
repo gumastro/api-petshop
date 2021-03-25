@@ -7,5 +7,8 @@ module.exports = {
                 supplier: idSupplier
             }
         })
+    },
+    add (data) {
+        return Model.create(data)
     }
 }
