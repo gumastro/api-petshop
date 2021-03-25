@@ -1,4 +1,4 @@
-const Table = require('./ProductTable')
+const ProductTable = require('./ProductTable')
 
 class Product {
     constructor ({ id, title, price, inventory, supplier, createdAt, updatedAt, version }) {
@@ -13,7 +13,7 @@ class Product {
     }
 
     async create () {
-        const result = await Table.add({
+        const result = await ProductTable.add({
             title: this.title,
             price: this.price,
             inventory: this.inventory,
@@ -24,6 +24,10 @@ class Product {
         this.createdAt = result.createdAt
         this.updatedAt = result.updatedAt
         this.version = result.version
+    }
+
+    delete () {
+        return ProductTable.delete(this.id, this.supplier)
     }
 }
 
