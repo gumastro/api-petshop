@@ -3,25 +3,25 @@ const SupplierTable = require('./SupplierTable')
 const Supplier = require('./Supplier')
 const SupplierSerializer = require('../../Serializer').SupplierSerializer
 
-router.get('/', async (request, response) => {
+router.get('/', async (req, res) => {
     const results = await SupplierTable.list()
 
-    const serializer = new SupplierSerializer(response.getHeader('Content-Type'))
+    const serializer = new SupplierSerializer(res.getHeader('Content-Type'))
 
-    response.status(200).send(
+    res.status(200).send(
         serializer.serialize(results)
     )
 })
 
-router.post('/', async (request, response, next) => {
+router.post('/', async (req, res, next) => {
     try {
-        const receivedData = request.body
+        const receivedData = req.body
         const supplier = new Supplier(receivedData)
         await supplier.create()
 
-        const serializer = new SupplierSerializer(response.getHeader('Content-Type'))
+        const serializer = new SupplierSerializer(res.getHeader('Content-Type'))
 
-        response.status(201).send(
+        res.status(201).send(
             serializer.serialize(supplier)
         )
     } catch(error) {
@@ -29,19 +29,19 @@ router.post('/', async (request, response, next) => {
     }
 })
 
-router.get('/:idSupplier', async (request, response, next) => {
+router.get('/:idSupplier', async (req, res, next) => {
     try {
-        const id = request.params.idSupplier
+        const id = req.params.idSupplier
         const supplier = new Supplier({ id: id })
         
         await supplier.load()
 
         const serializer = new SupplierSerializer(
-            response.getHeader('Content-Type'),
+            res.getHeader('Content-Type'),
             ['email', 'createdAt', 'updatedAt', 'version']
         )
 
-        response.status(200).send(
+        res.status(200).send(
             serializer.serialize(supplier)
         )
     } catch (error) {
@@ -49,30 +49,30 @@ router.get('/:idSupplier', async (request, response, next) => {
     }
 })
 
-router.put('/:idSupplier', async (request, response, next) => {
+router.put('/:idSupplier', async (req, res, next) => {
     try {
-        const id = request.params.idSupplier
-        const receivedData = request.body
+        const id = req.params.idSupplier
+        const receivedData = req.body
         const data = Object.assign({}, receivedData, { id: id })
         const supplier = new Supplier(data)
 
         await supplier.update()
     
-        response.status(204).end()
+        res.status(204).end()
     } catch (error) {
         next(error)
     }
 })
 
-router.delete('/:idSupplier', async (request, response, next) => {
+router.delete('/:idSupplier', async (req, res, next) => {
     try {
-        const id = request.params.idSupplier
+        const id = req.params.idSupplier
         const supplier = new Supplier({ id: id })
 
         await supplier.load()
         await supplier.delete()
 
-        response.status(204).end()
+        res.status(204).end()
     } catch (error) {
         next(error)
     }

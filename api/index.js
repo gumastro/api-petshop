@@ -11,26 +11,26 @@ const app = express()
 
 app.use(express.json());
 
-app.use((request, response, next) => {
-    let requestedFormat = request.header('Accept')
+app.use((req, res, next) => {
+    let requestedFormat = req.header('Accept')
 
     if(requestedFormat === '*/*') {
         requestedFormat = 'application/json'
     }
 
     if (acceptedFormats.indexOf(requestedFormat) === -1) {
-        response.status(406).end()
+        res.status(406).end()
         return
     }
 
-    response.setHeader('Content-Type', requestedFormat)
+    res.setHeader('Content-Type', requestedFormat)
     next()
 })
 
 const router = require('./routes/suppliers')
 app.use('/api/suppliers', router)
 
-app.use((error, request, response, next) => {
+app.use((error, req, res, next) => {
     let status = 500
 
     if(error instanceof NotFound) {
@@ -44,9 +44,9 @@ app.use((error, request, response, next) => {
     }
 
     const serializer = new ErrorSerializer(
-        response.getHeader('Content-Type')
+        res.getHeader('Content-Type')
     )
-    response.status(status).send(
+    res.status(status).send(
         serializer.serialize({
             message: error.message,
             id: error.idError
