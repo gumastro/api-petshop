@@ -9,16 +9,20 @@ router.get('/', async (req, res) => {
     )
 })
 
-router.post('/', async (req, res) => {
-    const idSupplier = req.params.idSupplier
-    const body = req.body
-    const data = Object.assign({}, body, { supplier: idSupplier })
-    const product = new Product(data)
-    await product.create()
+router.post('/', async (req, res, next) => {
+    try {
+        const idSupplier = req.params.idSupplier
+        const body = req.body
+        const data = Object.assign({}, body, { supplier: idSupplier })
+        const product = new Product(data)
+        await product.create()
 
-    res.status(201).send(
-        JSON.stringify(product)
-    )
+        res.status(201).send(
+            JSON.stringify(product)
+        )
+    } catch (error) {
+        next(error)
+    }
 })
 
 router.delete('/:id', async (req, res) => {

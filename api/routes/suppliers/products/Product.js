@@ -12,7 +12,18 @@ class Product {
         this.version = version
     }
 
+    validate () {
+        if (typeof this.title !== 'string' || this.title.length === 0) {
+            throw new Error('[ERROR] Invalid title field')
+        }
+        
+        if (typeof this.price !== 'number' || this.price === 0) {
+            throw new Error('[ERROR] Invalid price field')
+        }
+    }
+
     async create () {
+        this.validate()
         const result = await ProductTable.add({
             title: this.title,
             price: this.price,
