@@ -24,8 +24,8 @@ router.post('/', async (req, res, next) => {
         res.status(201).send(
             serializer.serialize(supplier)
         )
-    } catch(error) {
-        next(error)
+    } catch(err) {
+        next(err)
     }
 })
 
@@ -44,8 +44,8 @@ router.get('/:idSupplier', async (req, res, next) => {
         res.status(200).send(
             serializer.serialize(supplier)
         )
-    } catch (error) {
-        next(error)
+    } catch (err) {
+        next(err)
     }
 })
 
@@ -59,8 +59,8 @@ router.put('/:idSupplier', async (req, res, next) => {
         await supplier.update()
     
         res.status(204).end()
-    } catch (error) {
-        next(error)
+    } catch (err) {
+        next(err)
     }
 })
 
@@ -73,8 +73,8 @@ router.delete('/:idSupplier', async (req, res, next) => {
         await supplier.delete()
 
         res.status(204).end()
-    } catch (error) {
-        next(error)
+    } catch (err) {
+        next(err)
     }
 })
 

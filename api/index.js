@@ -30,16 +30,16 @@ app.use((req, res, next) => {
 const router = require('./routes/suppliers')
 app.use('/api/suppliers', router)
 
-app.use((error, req, res, next) => {
+app.use((err, req, res, next) => {
     let status = 500
 
-    if(error instanceof NotFound) {
+    if(err instanceof NotFound) {
         status = 404
     }
-    if(error instanceof InvalidField || error instanceof DataNotProvided) {
+    if(err instanceof InvalidField || err instanceof DataNotProvided) {
         status = 400
     }
-    if(error instanceof UnsupportedValue) {
+    if(err instanceof UnsupportedValue) {
         status = 406
     }
 
@@ -48,8 +48,8 @@ app.use((error, req, res, next) => {
     )
     res.status(status).send(
         serializer.serialize({
-            message: error.message,
-            id: error.idError
+            message: err.message,
+            id: err.idError
         })
     )
 })

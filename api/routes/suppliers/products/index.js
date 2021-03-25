@@ -20,8 +20,8 @@ router.post('/', async (req, res, next) => {
         res.status(201).send(
             JSON.stringify(product)
         )
-    } catch (error) {
-        next(error)
+    } catch (err) {
+        next(err)
     }
 })
 
