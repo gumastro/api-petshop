@@ -37,4 +37,22 @@ router.delete('/:id', async (req, res) => {
     res.status(204).end()
 })
 
+router.get('/:id', async (req, res, next) => {
+    try {
+        const data = {
+            id: req.params.id,
+            supplier: req.supplier.id
+        }
+    
+        const product = new Product(data)
+        await product.load()
+    
+        res.status(200).send(
+            JSON.stringify(product)
+        )
+    } catch (err) {
+        next(err)
+    }
+})
+
 module.exports = router

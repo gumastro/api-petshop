@@ -18,5 +18,20 @@ module.exports = {
                 supplier: idSupplier
             }
         })
+    },
+    async findById(idProduct, idSupplier) {
+        const found = await Model.findOne({
+            where: {
+                id: idProduct,
+                supplier: idSupplier
+            },
+            raw: true
+        })
+
+        if (!found) {
+            throw new Error('[ERROR] Product not found')
+        }
+
+        return found
     }
 }

@@ -40,6 +40,16 @@ class Product {
     delete () {
         return ProductTable.delete(this.id, this.supplier)
     }
+
+    async load() {
+        const product = await ProductTable.findById(this.id, this.supplier)
+        this.title = product.title
+        this.price = product.price
+        this.inventory = product.inventory
+        this.createdAt = product.createdAt
+        this.updatedAt = product.updatedAt
+        this.version = product.version
+    }
 }
 
 module.exports = Product
