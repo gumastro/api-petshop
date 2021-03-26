@@ -3,7 +3,7 @@ const Table = require('./ProductTable')
 const Product = require('./Product')
 
 router.get('/', async (req, res) => {
-    const products = await Table.list(req.params.idSupplier)
+    const products = await Table.list(req.supplier.id)
     res.send(
         JSON.stringify(products)
     )
@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res, next) => {
     try {
-        const idSupplier = req.params.idSupplier
+        const idSupplier = req.supplier.id
         const body = req.body
         const data = Object.assign({}, body, { supplier: idSupplier })
         const product = new Product(data)
@@ -28,7 +28,7 @@ router.post('/', async (req, res, next) => {
 router.delete('/:id', async (req, res) => {
     const data = {
         id: req.params.id,
-        supplier: req.params.idSupplier
+        supplier: req.supplier.id
     }
 
     const product = new Product(data)
