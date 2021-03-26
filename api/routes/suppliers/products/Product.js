@@ -50,6 +50,33 @@ class Product {
         this.updatedAt = product.updatedAt
         this.version = product.version
     }
+
+    update() {
+        
+        const dataToUpdate = {}
+
+        if (typeof this.title === 'string' && this.title.length > 0) {
+            dataToUpdate.title = this.title
+        }
+        if (typeof this.price === 'number' && this.price > 0) {
+            dataToUpdate.price = this.price
+        }
+        if (typeof this.inventory === 'number' && this.inventory >= 0) {
+            dataToUpdate.inventory = this.inventory
+        }
+
+        if (Object.keys(dataToUpdate).length === 0) {
+            throw new Error('[ERROR] Data not provided')
+        }
+
+        return ProductTable.update(
+            {
+                id: this.id,
+                supplier: this.supplier
+            },
+            dataToUpdate
+        )
+    }
 }
 
 module.exports = Product
