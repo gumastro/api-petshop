@@ -23,6 +23,11 @@ router.post('/', async (req, res, next) => {
 
         const serializer = new Serializer(res.getHeader('Content-Type'))
 
+        res.set('ETag', product.version)
+        const timestamp = (new Date(product.updatedAt)).getTime()
+        res.set('Last-Modified', timestamp)
+        res.set('Location', `/api/suppliers/${product.supplier}/products/${product.id}`)
+
         res.status(201).send(
             serializer.serialize(product)
         )
@@ -58,6 +63,10 @@ router.get('/:id', async (req, res, next) => {
             ['price', 'inventory', 'supplier', 'createdAt', 'updatedAt', 'version']
         )
     
+        res.set('ETag', product.version)
+        const timestamp = (new Date(product.updatedAt)).getTime()
+        res.set('Last-Modified', timestamp)
+
         res.status(200).send(
             serializer.serialize(product)
         )
@@ -79,6 +88,11 @@ router.put('/:id', async (req, res, next) => {
     
         const product = new Product(data)
         await product.update()
+        await product.load()
+
+        res.set('ETag', product.version)
+        const timestamp = (new Date(product.updatedAt)).getTime()
+        res.set('Last-Modified', timestamp)
 
         res.status(204).end()
     } catch (err) {
@@ -97,6 +111,11 @@ router.put('/:id/subtract-inventory', async (req, res, next) => {
         product.inventory = product.inventory - req.body.amount >= 0 ? product.inventory - req.body.amount : 0
 
         await product.subtractInventory()
+        await product.load()
+
+        res.set('ETag', product.version)
+        const timestamp = (new Date(product.updatedAt)).getTime()
+        res.set('Last-Modified', timestamp)
 
         res.status(204).end()
     } catch (err) {
