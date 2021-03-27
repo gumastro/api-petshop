@@ -15,7 +15,7 @@ module.exports = {
             }
         })
         if (!found) {
-            throw new NotFound()
+            throw new NotFound('Supplier')
         }
 
         return found

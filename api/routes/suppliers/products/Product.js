@@ -1,3 +1,5 @@
+const DataNotProvided = require('../../../errors/DataNotProvided')
+const InvalidField = require('../../../errors/InvalidField')
 const ProductTable = require('./ProductTable')
 
 class Product {
@@ -14,11 +16,11 @@ class Product {
 
     validate () {
         if (typeof this.title !== 'string' || this.title.length === 0) {
-            throw new Error('[ERROR] Invalid title field')
+            throw new InvalidField('title')
         }
         
         if (typeof this.price !== 'number' || this.price === 0) {
-            throw new Error('[ERROR] Invalid price field')
+            throw new InvalidField('price')
         }
     }
 
@@ -66,7 +68,7 @@ class Product {
         }
 
         if (Object.keys(dataToUpdate).length === 0) {
-            throw new Error('[ERROR] Data not provided')
+            throw new DataNotProvided()
         }
 
         return ProductTable.update(
