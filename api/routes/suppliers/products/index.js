@@ -86,7 +86,7 @@ router.put('/:id', async (req, res, next) => {
     }
 })
 
-router.post('/:id/subtract-inventory', async (req, res, next) => {
+router.put('/:id/subtract-inventory', async (req, res, next) => {
     try {
         const product = new Product({
             id: req.params.id,
