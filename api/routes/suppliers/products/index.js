@@ -75,6 +75,26 @@ router.get('/:id', async (req, res, next) => {
     }
 })
 
+router.head('/:id', async (req, res, next) => {
+    try {
+        const data = {
+            id: req.params.id,
+            supplier: req.supplier.id
+        }
+    
+        const product = new Product(data)
+        await product.load()
+
+        res.set('ETag', product.version)
+        const timestamp = (new Date(product.updatedAt)).getTime()
+        res.set('Last-Modified', timestamp)
+
+        res.status(200).end()
+    } catch (err) {
+        next(err)
+    }
+})
+
 router.put('/:id', async (req, res, next) => {
     try {
         const data = Object.assign(
