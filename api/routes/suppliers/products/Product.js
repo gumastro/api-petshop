@@ -77,6 +77,15 @@ class Product {
             dataToUpdate
         )
     }
+
+    subtractInventory () {
+        return ProductTable.subtract(
+            this.id,
+            this.supplier,
+            'inventory',
+            this.inventory
+        )
+    }
 }
 
 module.exports = Product

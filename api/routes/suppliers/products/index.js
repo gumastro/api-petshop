@@ -86,4 +86,22 @@ router.put('/:id', async (req, res, next) => {
     }
 })
 
+router.post('/:id/subtract-inventory', async (req, res, next) => {
+    try {
+        const product = new Product({
+            id: req.params.id,
+            supplier: req.supplier.id
+        })
+    
+        await product.load()
+        product.inventory = product.inventory - req.body.amount >= 0 ? product.inventory - req.body.amount : 0
+
+        await product.subtractInventory()
+
+        res.status(204).end()
+    } catch (err) {
+        next(err)
+    }
+})
+
 module.exports = router

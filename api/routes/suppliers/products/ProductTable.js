@@ -1,4 +1,5 @@
 const Model = require('./ProductTableModel')
+const instance = require('../../../database')
 
 module.exports = {
     list (idSupplier) {
@@ -42,5 +43,21 @@ module.exports = {
                 where: productData,
             }
         )
+    },
+    subtract(idProduct, idSupplier, field, amount) {
+        return instance.transaction(async deal => {
+            const product = await Model.findOne({
+                where: {
+                    id: idProduct,
+                    supplier: idSupplier
+                }
+            })
+
+            product[field] = amount
+
+            await product.save()
+
+            return product
+        })
     }
 }
