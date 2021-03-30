@@ -3,6 +3,12 @@ const SupplierTable = require('./SupplierTable')
 const Supplier = require('./Supplier')
 const SupplierSerializer = require('../../Serializer').SupplierSerializer
 
+router.options('/', (req, res) => {
+    res.set('Access-Control-Allow-Methods', 'GET, POST')
+    res.set('Access-Control-Allow-Headers', 'Content-Type')
+    res.status(204).end()
+})
+
 router.get('/', async (req, res) => {
     const results = await SupplierTable.list()
 
@@ -27,6 +33,12 @@ router.post('/', async (req, res, next) => {
     } catch(err) {
         next(err)
     }
+})
+
+router.options('/:idSupplier', (req, res) => {
+    res.set('Access-Control-Allow-Methods', 'GET, PUT, DELETE')
+    res.set('Access-Control-Allow-Headers', 'Content-Type')
+    res.status(204).end()
 })
 
 router.get('/:idSupplier', async (req, res, next) => {
