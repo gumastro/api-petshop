@@ -62,7 +62,7 @@ class SupplierSerializer extends Serializer {
     constructor(contentType, extraFields) {
         super()
         this.contentType = contentType
-        this.publicFields = ['id', 'company', 'category'].concat(extraFields || [])
+        this.publicFields = ['id', 'category'].concat(extraFields || [])
         this.tagSingular = 'supplier'
         this.tagPlural = 'suppliers'
     }

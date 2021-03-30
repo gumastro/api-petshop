@@ -12,7 +12,10 @@ router.options('/', (req, res) => {
 router.get('/', async (req, res) => {
     const results = await SupplierTable.list()
 
-    const serializer = new SupplierSerializer(res.getHeader('Content-Type'))
+    const serializer = new SupplierSerializer(
+        res.getHeader('Content-Type'),
+        ['company']
+    )
 
     res.status(200).send(
         serializer.serialize(results)
@@ -25,7 +28,10 @@ router.post('/', async (req, res, next) => {
         const supplier = new Supplier(receivedData)
         await supplier.create()
 
-        const serializer = new SupplierSerializer(res.getHeader('Content-Type'))
+        const serializer = new SupplierSerializer(
+            res.getHeader('Content-Type'),
+            ['company']
+        )
 
         res.status(201).send(
             serializer.serialize(supplier)
@@ -50,7 +56,7 @@ router.get('/:idSupplier', async (req, res, next) => {
 
         const serializer = new SupplierSerializer(
             res.getHeader('Content-Type'),
-            ['email', 'createdAt', 'updatedAt', 'version']
+            ['email', 'company', 'createdAt', 'updatedAt', 'version']
         )
 
         res.status(200).send(

@@ -35,6 +35,9 @@ app.use((req, res, next) => {
 const router = require('./routes/suppliers')
 app.use('/api/suppliers', router)
 
+const routerV2 = require('./routes/suppliers/routes.v2')
+app.use('/api/v2/suppliers', routerV2)
+
 app.use((err, req, res, next) => {
     let status = 500
 
